@@ -1,0 +1,23 @@
+---
+- name: Synchronize Playbook
+  hosts: "{{ groups['broadcast'][0]}}"
+  tasks:
+     - name: check a.ini
+       stat:
+         path: /home/ubuntu/git/a.ini
+       register: fileStatus
+
+     - name: pull the files from host1 to host2 through pull method
+       synchronize:
+          src: /home/ubuntu/git/tennis-player.txt
+          dest: /home/ubuntu/basket-player.txt
+          mode: pull
+       delegate_to: "{{ groups['broadcast'][1] }}"
+       register: syncstatus
+       when: fileStatus.stat.exists
+
+     - name: print status synchronize
+       debug:
+         msg: "{{ syncstatus.changed }}" 
+       
+...

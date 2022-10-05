@@ -1,0 +1,12 @@
+---
+- name: debug playbook
+  hosts: all
+  tasks:
+    - name: print hello world message
+      debug:
+         msg: Hello world!
+
+    - name: print welcome hi message
+      debug:
+         msg: Welcome hi!
+...

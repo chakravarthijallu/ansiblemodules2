@@ -1,0 +1,16 @@
+---
+- name: Synchronize Playbook
+  hosts: "{{ groups['broadcast'][0] }}"
+  tasks:
+     - name: copy files from host2 to host1
+       synchronize:
+          src: /home/ubuntu/cricket-player.txt
+          dest: /home/ubuntu/git
+          mode: push
+       delegate_to: "{{ groups['broadcast'][1] }}"
+       register: fileStat
+
+     - name: print state is changed or not
+       debug:
+          msg: "{{ fileStat.changed }}"
+...

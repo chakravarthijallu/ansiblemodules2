@@ -1,0 +1,21 @@
+---
+- name: Delegate Playbook
+  hosts: all
+  tasks:
+     - name: Run the hostname command in managed_host
+       shell: hostname
+       register: managedhost_output
+
+     - name: Print the hostname 
+       debug: 
+         msg: "{{ managedhost_output.stdout }}"
+
+     - name: Run the hostname in localhost
+       shell: hostname 
+       delegate_to: localhost
+       register: localhost_output
+
+     - name: Print the hostname
+       debug:
+         msg: "{{ localhost_output.stdout }}"
+...
