@@ -1,0 +1,22 @@
+---
+- name: Mysql Client install and database creation with table.
+  hosts: all
+  vars_files:
+    - varfiles.yml
+  tasks:
+     - name: Install Mysql Client package
+       apt: 
+         name: mysql-client-8.0
+         state: present
+         update_cache: yes
+       become: yes
+
+     - name: Create database with table
+       mysql_db:
+         state: import
+         name: all
+         target: /home/ubuntu/db-schema2.sql
+         login_host: "{{ host_name }}"
+         login_user: "{{ user_name }}"
+         login_password: "{{ password }}"       
+...
