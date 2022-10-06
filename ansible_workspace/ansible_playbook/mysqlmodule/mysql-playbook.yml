@@ -1,0 +1,21 @@
+---
+- name: Mysql Install and create db playbook
+  hosts: all
+  tasks:
+     - name: install mysql db
+       apt:
+         name: mysql-client-8.0
+         state: present
+         update_cache: yes
+       become: yes
+
+
+     - name: create db
+       mysql_db: 
+         state: present
+         name: fithealth2db
+         login_host: fithealthdb.crwar0hk4ws5.ap-south-1.rds.amazonaws.com
+         login_user: root
+         login_password: welcome#1
+
+...

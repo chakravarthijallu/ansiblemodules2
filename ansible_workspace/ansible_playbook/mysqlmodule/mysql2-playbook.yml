@@ -1,0 +1,13 @@
+---
+- name: Mysql db Creation in rds service
+  hosts: all
+  tasks:
+     - name: Create Mysql DB
+       mysql_db:
+          state: import
+          name: all
+          target: /home/ubuntu/db-schema.sql
+          login_host: fithealthdb.crwar0hk4ws5.ap-south-1.rds.amazonaws.com
+          login_user: root
+          login_password: welcome#1
+...
