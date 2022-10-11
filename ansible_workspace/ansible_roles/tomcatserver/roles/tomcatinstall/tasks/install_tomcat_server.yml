@@ -1,0 +1,63 @@
+- name: create tomcat user
+  user:
+     name: "{{ tomcat_user }}"
+     state: present
+     shell: /bin/bash
+  become: yes
+
+- name: create tomcat installed dir
+  file:
+     path: "{{ tomcat_installed_dir }}"
+     state: directory
+     owner: "{{ tomcat_user }}"
+     group: "{{ tomcat_group }}"
+     mode: '755'
+  become: yes
+
+- name: create tomcat dir
+  file: 
+     path: "{{ tomcat_installed_dir }}{{ tomcat_dir }}"
+     state: directory
+     owner: "{{ tomcat_user }}"
+     group: "{{ tomcat_group }}"
+     mode: '755'
+  become: yes
+
+- name: download the tomcat software
+  get_url: 
+     url: "{{ tomcat_url }}"
+     dest: "{{ tomcat_installed_dir }}/apache-tomcat10.tar.gz"
+     owner: "{{ tomcat_user }}"
+     group: "{{ tomcat_group }}"
+  become: yes
+
+- name: directly download and unarchive the tomcat10
+  unarchive: 
+    src: "{{ tomcat_installed_dir }}apache-tomcat10.tar.gz"
+    dest: "{{ tomcat_installed_dir }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    remote_src: yes
+  become: yes
+
+- name: copy the tomcat10 to install dir
+  copy:
+     src: "{{ tomcat_installed_dir }}{{ tomcat_dir_name }}/"
+     dest: "{{ tomcat_installed_dir }}{{ tomcat_dir }}/"
+     remote_src: yes
+     owner: "{{ tomcat_user }}"
+     group: "{{ tomcat_group }}"
+  become: yes
+
+
+- name: Generate template file for tomcat.service
+  template: 
+    src: templates/tomcat.service.j2
+    dest: /etc/systemd/system/tomcat.service
+  become: yes
+
+- name: Start Service tomcat 
+  service:
+     name: tomcat
+     state: started
+  become: yes

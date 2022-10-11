@@ -1,0 +1,6 @@
+---
+# tasks file for tomcatinstall
+
+- import_tasks: install_jdk.yml
+- import_tasks: install_tomcat_server.yml
+...

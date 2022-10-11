@@ -1,0 +1,10 @@
+- name: install jdk 
+  apt: 
+    name: openjdk-11-jdk
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: create java_home variable
+  shell: readlink -f $(which java) | sed 's/bin.*//g'
+  register: java_home
