@@ -1,0 +1,7 @@
+---
+# defaults file for apache2install
+#
+
+SERVERNAME: www.crazyeats.com
+DOMAINNAME: crazyeats
+...
