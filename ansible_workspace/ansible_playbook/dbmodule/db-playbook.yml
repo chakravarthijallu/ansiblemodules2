@@ -1,0 +1,27 @@
+---
+- name: Mysql Database playbook
+  hosts: localhost
+  vars_files:
+     - dbcredentials.yml
+  tasks:
+     - name: install mysql client
+       apt: 
+         name: mysql-client-8.0
+         state: present
+         update_cache: yes
+       become: yes
+     - name: Install Python software
+       apt:
+         name: python3-pymysql
+         state: present
+       become: yes
+
+     - name: create database
+       mysql_db: 
+         state: import
+         name: all
+         target: /home/ubuntu/db-schema.sql
+         login_host: "{{ MYSQL_HOST }}"
+         login_user: "{{ MYSQL_USER }}"
+         login_password: "{{ MYSQL_PASSWORD }}"
+...     
